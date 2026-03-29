@@ -8,7 +8,6 @@ import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import KeyvRedis from '@keyv/redis';
 import { APP_GUARD } from '@nestjs/core';
-import { SearchController } from './search/search.controller';
 import { SearchModule } from './search/search.module';
 
 @Module({
@@ -30,7 +29,7 @@ import { SearchModule } from './search/search.module';
     }),
     SearchModule
   ],
-  controllers: [AppController, SearchController],
+  controllers: [AppController],
   providers: [
     AppService,
     {
