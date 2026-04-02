@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { AuthModule } from './auth/auth.module';
+import { StatusModule } from './status/status.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import KeyvRedis from '@keyv/redis';
 import { APP_GUARD } from '@nestjs/core';
@@ -14,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
     PrismaModule,
     RoomsModule,
     AuthModule,
+    StatusModule,
     CacheModule.register({
       isGlobal: true,
       ttl: 15 * 1000 * 60,
