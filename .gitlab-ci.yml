@@ -6,7 +6,7 @@ deploy_to_server:
   image: alpine
   before_script:
     - echo "Installing dependencies..."
-    - apk add --no-cache openssh-client bash docker
+    - apk add --no-cache openssh-client bash docker docker-compose
     - echo "Creating the .ssh folder..."
     - mkdir -p ~/.ssh
     - echo "Putting the SSH Private key in the wallet..."
