@@ -4,13 +4,11 @@ stages:
 # Source - https://stackoverflow.com/a/79555578
 # Posted by Sooareszy (Thank you Sooareszy)
 # Retrieved 2026-04-16, License - CC BY-SA 4.0
-variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: "unix:///var/run/docker.sock"
-
 deploy_to_server:
   stage: deploy
-  image: docker
+  image: docker:28.0.4
+  services:
+    - docker:28.0.4-dind
   # before_script:
   #   - echo "Installing dependencies..."
   #   - apk add --no-cache docker docker-compose
