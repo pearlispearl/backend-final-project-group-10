@@ -5,11 +5,17 @@ deploy_to_server:
   stage: deploy
   image: alpine
   before_script:
+    - echo "Installing dependencies..."
     - apk add --no-cache openssh-client bash docker
+    - echo "Creating the .ssh folder..."
     - mkdir -p ~/.ssh
+    - echo "Putting the SSH Private key in the wallet..."
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+    - echo "Changing the permissions for the SSH Private key..."
     - chmod 600 ~/.ssh/id_ed25519
+    - echo "Starting SSH key scan..."
     - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
+    - echo "Pre-script done."
   script:
     - echo "Entering source folder..."
     - cd nest-prisma-lab
@@ -25,3 +31,4 @@ deploy_to_server:
     - docker push $DOCKERHUB_REPO
     - echo "Deploying on the server..."
     - ssh "$SERVER_USER@$SERVER_HOST" "cd $SERVER_PATH; docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD; docker pull $DOCKERHUB_REPO; docker run $DOCKERHUB_REPO -d; docker logout"
+    - echo "Script done."
