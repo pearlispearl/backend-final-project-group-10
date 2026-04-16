@@ -14,8 +14,8 @@ deploy_to_server:
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
     - echo "Changing the permissions for the SSH Private key..."
     - chmod 600 ~/.ssh/id_ed25519
-    - echo "Starting SSH key scan..."
-    - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
+    # - echo "Starting SSH key scan..."
+    # - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
     - echo "Starting Docker daemon..."
     - systemctl start docker.service
     - echo "Pre-script done."
