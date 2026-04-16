@@ -4,8 +4,6 @@ stages:
 deploy_to_server:
   stage: deploy
   image: alpine
-  only:
-    - main
   before_script:
     - apk add --no-cache openssh-client bash docker
     - mkdir -p ~/.ssh
