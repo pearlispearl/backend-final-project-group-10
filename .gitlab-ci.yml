@@ -1,13 +1,6 @@
 stages:
   - deploy
 
-# Source - https://stackoverflow.com/a/79555578
-# Posted by Sooareszy
-# Retrieved 2026-04-16, License - CC BY-SA 4.0
-variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://host.docker.internal:2375
-
 deploy_to_server:
   stage: deploy
   image: docker:28.0.4
@@ -27,7 +20,10 @@ deploy_to_server:
   #   # - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
   #   - echo "Starting Docker daemon..."
   #   - systemctl start docker
-  #   - echo "Pre-script done."
+  #   - echo "Pre-script done."  script:
+    - unset DOCKER_HOST
+    - echo "Logging into Dockerhub..."
+    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
   script:
     - echo "Entering source folder..."
     - cd nest-prisma-lab
@@ -37,8 +33,6 @@ deploy_to_server:
     - docker compose up --build -d
     - echo "Tagging built image..."
     - docker tag nest-prisma-lab-app jarukitman/backend-project
-    - echo "Logging into Dockerhub..."
-    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - echo "Pushing to Dockerhub..."
     - docker push $DOCKERHUB_REPO
     # - echo "Deploying on the server..."
