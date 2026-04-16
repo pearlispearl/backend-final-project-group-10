@@ -3,9 +3,10 @@ stages:
 
 deploy_to_server:
   stage: deploy
-  image: docker:28.0.4
+  image: docker
   services:
-    - docker:28.0.4-dind
+    - name: docker:dind
+      alias: docker
   # before_script:
   #   - echo "Installing dependencies..."
   #   - apk add --no-cache docker docker-compose
