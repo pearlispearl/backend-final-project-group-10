@@ -7,10 +7,6 @@ deploy_to_server:
   services:
     - name: docker:dind
       alias: docker
-  variables:
-    # Tell docker CLI how to talk to Docker daemon; see
-    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
-    DOCKER_HOST: tcp://10.34.112.171:2375/
   # before_script:
   #   - echo "Installing dependencies..."
   #   - apk add --no-cache docker docker-compose
@@ -34,9 +30,10 @@ deploy_to_server:
     - echo "Creating .env..."
     - echo "DATABASE_URL=$DATABASE_URL\nJWT_SECRET=$JWT_SECRET" > .env
     - echo "Starting Build..."
-    - docker compose up --build -d
-    - echo "Tagging built image..."
-    - docker tag nest-prisma-lab-app jarukitman/backend-project
+    # - docker compose up --build -d
+    - docker build -t $DOCKERHUB_REPO .
+    # - echo "Tagging built image..."
+    # - docker tag nest-prisma-lab-app $DOCKERHUB_REPO
     - echo "Pushing to Dockerhub..."
     - docker push $DOCKERHUB_REPO
     # - echo "Deploying on the server..."
