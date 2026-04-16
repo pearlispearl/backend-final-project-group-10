@@ -6,7 +6,7 @@ deploy_to_server:
   image: alpine
   before_script:
     - echo "Installing dependencies..."
-    - apk add --no-cache openssh-client bash docker docker-compose
+    - apk add --no-cache openssh-client bash docker docker-compose openrc
     - echo "Creating the .ssh folder..."
     - mkdir -p ~/.ssh
     - echo "Putting the SSH Private key in the wallet..."
@@ -16,7 +16,7 @@ deploy_to_server:
     # - echo "Starting SSH key scan..."
     # - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
     - echo "Starting Docker daemon..."
-    - dockerd &
+    - service docker start
     - echo "Pre-script done."
   script:
     - echo "Entering source folder..."
