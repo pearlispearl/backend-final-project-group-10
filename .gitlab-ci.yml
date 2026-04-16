@@ -3,20 +3,20 @@ stages:
 
 deploy_to_server:
   stage: deploy
-  image: alpine
+  image: archlinux
   before_script:
     - echo "Installing dependencies..."
-    - apk add --no-cache openssh-client bash docker docker-compose openrc
+    - pacman -S openssh docker docker-compose
     - echo "Creating the .ssh folder..."
     - mkdir -p ~/.ssh
     - echo "Putting the SSH Private key in the wallet..."
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
     - echo "Changing the permissions for the SSH Private key..."
     - chmod 600 ~/.ssh/id_ed25519
-    # - echo "Starting SSH key scan..."
-    # - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
-    # - echo "Starting Docker daemon..."
-    # - service docker start
+    - echo "Starting SSH key scan..."
+    - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
+    - echo "Starting Docker daemon..."
+    - systemctl start docker.service
     - echo "Pre-script done."
   script:
     - echo "Entering source folder..."
