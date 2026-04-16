@@ -21,8 +21,7 @@ deploy_to_server:
   #   # - ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
   #   - echo "Starting Docker daemon..."
   #   - systemctl start docker
-  #   - echo "Pre-script done."  script:
-    - unset DOCKER_HOST
+  #   - echo "Pre-script done."
     - echo "Logging into Dockerhub..."
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
   script:
