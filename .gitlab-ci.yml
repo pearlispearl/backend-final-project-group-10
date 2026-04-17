@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  image: node:alpine-20
+  image: node:20-alpine
   before_script:
     - cd nest-prisma-lab
     - npm install
