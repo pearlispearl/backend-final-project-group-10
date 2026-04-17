@@ -10,13 +10,15 @@ deploy_to_server:
     # Retrieved 2026-04-16, License - CC BY-SA 4.0
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: "tcp://localhost:2375"
 
   services:
-    - name: docker:dind
-      alias: docker
-      entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+    - name: docker
+      entrypoint: ["dockerd-entrypoint.sh", "--tls=false", "-v", "/var/run/docker.sock:/var/run/docker.sock"]
     - echo "Logging into Dockerhub..."
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+    - echo "Test if Dockerd is running..."
+    - ps aux | grep dockerd
   script:
     - echo "Entering source folder..."
     - cd nest-prisma-lab
