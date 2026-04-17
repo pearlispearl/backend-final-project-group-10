@@ -15,6 +15,7 @@ deploy_to_server:
   services:
     - name: docker
       entrypoint: ["dockerd-entrypoint.sh", "--tls=false", "-v", "/var/run/docker.sock:/var/run/docker.sock"]
+  before_script:
     - echo "Logging into Dockerhub..."
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
     - echo "Test if Dockerd is running..."
