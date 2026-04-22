@@ -1,6 +1,7 @@
 import { Decimal } from "@prisma/client/runtime/index-browser";
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Type, Transform } from "class-transformer";
 
 export class SearchQueryDto {
   @IsString()
@@ -17,6 +18,7 @@ export class SearchQueryDto {
     example: 'amenities'
   })
   description?: string;
+  @Type(() => Number)
   @IsNumber()
   @IsOptional()
   @ApiPropertyOptional({
@@ -24,6 +26,7 @@ export class SearchQueryDto {
     example: 1
   })
   min_capacity?: number;
+  @Type(() => Number)
   @IsNumber()
   @IsOptional()
   @ApiPropertyOptional({
@@ -31,32 +34,38 @@ export class SearchQueryDto {
     example: 10
   })
   max_capacity?: number;
-  @IsNumber()
   @IsOptional()
-  @ApiPropertyOptional({
-    description: 'Minimum acceptable price of the room',
-    example: 0
-  })
+  @Transform(({ value }) => {
+  if (value === undefined || value === null || value === '') return undefined;
+  try { return new Decimal(value); } catch { return undefined; }
+})
+  @ApiPropertyOptional({ description: 'Minimum price', example: 0 })
   min_price_per_night?: Decimal;
-  @IsNumber()
   @IsOptional()
-  @ApiPropertyOptional({
-    description: 'Maximum acceptable price of the room',
-    example: 10000
+  @Transform(({ value }) => {
+    if (value === undefined || value === null || value === '') return undefined;
+    try {
+      return new Decimal(value);
+    } catch (e) {
+      return undefined;
+    }
   })
+  @ApiPropertyOptional({ description: 'Maximum price', example: 10000 })
   max_price_per_night?: Decimal;
+  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   @ApiProperty({
     description: 'Start of the date range the room needs to be available.',
     example: '2027-12-23T00:00:00.000Z'
   })
-  start_date: Date;
+  start_date!: Date;
+  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   @ApiProperty({
     description: 'End of the date range the room needs to be available.',
     example: '2028-01-01T08:00:00.000Z'
   })
-  end_date: Date;
+  end_date!: Date;
 }

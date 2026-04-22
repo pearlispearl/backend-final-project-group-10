@@ -11,7 +11,12 @@ describe('AuthController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    }).overrideProvider('CACHE_MANAGER')        
+      .useValue({
+        get: () => Promise.resolve(null),
+        set: () => Promise.resolve(),
+        del: () => Promise.resolve(),
+      }).compile();
 
     app = moduleFixture.createNestApplication();
     
@@ -19,7 +24,7 @@ describe('AuthController (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe());
     
     await app.init();
-    prisma = app.get<PrismaService>(PrismaService);
+    prisma = moduleFixture.get<PrismaService>(PrismaService);
 
     // Cleanup: Remove the test user if it exists from previous runs
     await prisma.users.deleteMany({
