@@ -20,7 +20,7 @@ async function bootstrap() {
     .setDescription('Include information about the Room management, Booking management, Notification management and account management APIs, and mention rate limiting (100 requests per minute)')
     .setVersion('1.0.0')
     .addTag('rooms')
-    .addTag('bookings')
+    .addTag('booking')
     .addTag('search')
     .addTag('auth')
     .addTag('notifications')

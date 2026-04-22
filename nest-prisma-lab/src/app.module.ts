@@ -11,6 +11,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import KeyvRedis from '@keyv/redis';
 import { APP_GUARD } from '@nestjs/core';
 import { SearchModule } from './search/search.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { SearchModule } from './search/search.module';
         { ttl: 60 * 1000, limit: 30 }
       ]
     }),
-    SearchModule
+    SearchModule,
+    BookingModule
   ],
   controllers: [AppController],
   providers: [
