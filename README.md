@@ -102,6 +102,74 @@ Dependencies: Bourne shell, NPM (Node Package Manager), NodeJS, MariaDB
     ```
     If you want to use some other port that isn't port 3000, you can choose to set an environment variable `PORT` to something else with `export PORT={whatever} sh start.sh`.
 
+# Testing
+
+Just run `npm run test` after you've set up the environment. That being starting the server according to the deployment instructions and stopping it.
+I've included the command in the start.sh script, so it should run immediately on docker compose. Here are the expected results.
+
+```
+app-1    | > nest-prisma-lab@0.0.1 test
+app-1    | > jest
+app-1    | 
+app-1    | PASS src/app.controller.spec.ts
+app-1    | PASS src/prisma/prisma.service.spec.ts
+app-1    | PASS src/booking/booking.service.spec.ts
+app-1    | PASS src/roles/roles.guard.spec.ts
+app-1    | PASS src/search/search.service.spec.ts
+app-1    | PASS src/notifications/notifications.controller.spec.ts
+app-1    | PASS src/notifications/notifications.service.spec.ts
+app-1    | [Nest] 268  - 04/22/2026, 4:45:11 PM   ERROR [RoomsService] Oh no! cannot create room. Room with name Deluxe Room already exists
+app-1    | [Nest] 268  - 04/22/2026, 4:45:11 PM   ERROR [RoomsService] Failed to update room 999: Record to update not found.
+app-1    | [Nest] 268  - 04/22/2026, 4:45:11 PM   ERROR [RoomsService] Failed to delete room 999: Record to delete not found.
+app-1    | [Nest] 271  - 04/22/2026, 4:45:11 PM   ERROR [AuthService] NotAcceptableException: Duplicate username
+app-1    |     at AuthService.register (/app/src/auth/auth.service.ts:17:13)
+app-1    |     at Object.<anonymous> (/app/src/auth/auth.service.spec.ts:61:7) {
+app-1    |   response: {
+app-1    |     message: 'Duplicate username',
+app-1    |     error: 'Not Acceptable',
+app-1    |     statusCode: 406
+app-1    |   },
+app-1    |   status: 406,
+app-1    |   options: {}
+app-1    | }
+app-1    | PASS src/rooms/rooms.service.spec.ts
+app-1    | PASS src/rooms/rooms.controller.spec.ts
+app-1    | PASS src/booking/booking.controller.spec.ts
+app-1    | PASS src/auth/auth.controller.spec.ts
+app-1    | PASS src/search/search.controller.spec.ts
+app-1    | PASS src/rooms/rooms.controller.integration.spec.ts
+app-1    | PASS src/booking/booking.controller.integration.spec.ts
+app-1    | [Nest] 271  - 04/22/2026, 4:45:11 PM   ERROR [AuthService] NotFoundException: User Not Found
+app-1    |     at AuthService.login (/app/src/auth/auth.service.ts:27:24)
+app-1    |     at Object.<anonymous> (/app/src/auth/auth.service.spec.ts:86:7) {
+app-1    |   response: {
+app-1    |     message: 'User Not Found',
+app-1    |     error: 'Not Found',
+app-1    |     statusCode: 404
+app-1    |   },
+app-1    |   status: 404,
+app-1    |   options: {}
+app-1    | }
+app-1    | [Nest] 271  - 04/22/2026, 4:45:12 PM   ERROR [AuthService] UnauthorizedException: Incorrect Password
+app-1    |     at AuthService.login (/app/src/auth/auth.service.ts:33:18)
+app-1    |     at Object.<anonymous> (/app/src/auth/auth.service.spec.ts:97:7) {
+app-1    |   response: {
+app-1    |     message: 'Incorrect Password',
+app-1    |     error: 'Unauthorized',
+app-1    |     statusCode: 401
+app-1    |   },
+app-1    |   status: 401,
+app-1    |   options: {}
+app-1    | }
+app-1    | PASS src/auth/auth.service.spec.ts
+app-1    | 
+app-1    | Test Suites: 15 passed, 15 total
+app-1    | Tests:       64 passed, 64 total
+app-1    | Snapshots:   0 total
+app-1    | Time:        3.074 s
+app-1    | Ran all test suites.
+```
+
 # Contribution Guide
 
 Make a new fork and open a new pull request every time you add a new feature with a `feat/...` name.
