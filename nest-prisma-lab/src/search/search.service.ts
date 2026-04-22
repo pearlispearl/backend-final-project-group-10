@@ -7,26 +7,54 @@ export class SearchService {
   constructor(private readonly prisma: PrismaService) {}
 
   async search(dto: SearchQueryDto) {
-    const all_rooms = await this.prisma.rooms.findMany()
-    return all_rooms.filter(
+    const rooms = await this.prisma.rooms.findMany(
+      {
+        where: {
+          AND: [
+            { capacity: {gte: dto.min_capacity} },
+            { capacity: {lte: dto.max_capacity} },
+            { price_per_night: {gte: dto.max_price_per_night} },
+            { price_per_night: {lte: dto.min_price_per_night} },
+          ]
+        }
+      }
+    )
+    return rooms.filter(
       room => {
         if (room.name && dto.name &&
           !room.name.includes(dto.name)) return false
         if (room.description && dto.description &&
           !room.description.includes(dto.description)) return false
 
-        if (room.capacity && dto.min_capacity &&
-          room.capacity < dto.min_capacity) return false
-        if (room.capacity && dto.max_capacity &&
-          room.capacity > dto.max_capacity) return false
-
-        if (room.price_per_night && dto.min_price_per_night &&
-          room.price_per_night < dto.min_price_per_night) return false
-        if (room.price_per_night && dto.max_price_per_night &&
-          room.price_per_night > dto.max_price_per_night) return false
-        // TODO: Might need to add date range.
-
         return room.is_active
+      }
+    ).filter(
+      async room => {
+        // Check if room is booked in that date range.
+        // Just findFirst our start < start < our end | start < our end < end and return true if it doesn't exist.
+        if (await this.prisma.bookings.findFirst(
+          {
+            select: {room_id: true},
+            where: {
+              AND: [
+                {room_id: room.id},
+                {OR: [
+                  { AND: [
+                      { start_date: { lte: dto.end_date } },
+                      { end_date: { gte: dto.end_date } }
+                    ]
+                  },
+                  { AND: [
+                      { start_date: { gte: dto.start_date } },
+                      { start_date: { lte: dto.end_date } }
+                    ]
+                  }
+                ]}
+              ]
+            }
+          }
+        )) return false
+        else return true
       }
     )
   }
