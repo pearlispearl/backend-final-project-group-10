@@ -16,25 +16,18 @@ export class BookingService {
     const user_id = this.get_user_id(req)
     const {room_id, start_date, end_date} = dto
     // Just findFirst our start < start < our end | start < our end < end and create a booking if it doesn't exist.
-    if (!await this.prisma.bookings.findFirst(
-      {
+    if (!await this.prisma.bookings.findFirst({
         where: {
-          OR: [
-            { AND: [
-                { start_date: { lte: dto.end_date } },
-                { end_date: { gte: dto.end_date } }
-              ]
-            },
-            { AND: [
-                { start_date: { gte: dto.start_date } },
-                { start_date: { lte: dto.end_date } }
-              ]
-            }
+          AND: [
+            { start_date: { lte: dto.end_date } },
+            { end_date: { gte: dto.start_date } }
           ]
         }
       }
-    )) return this.prisma.bookings.create({data: {user_id, room_id, start_date, end_date}})
-    else throw new NotAcceptableException('This booking overlaps with a pre-existing booking.')
+    )) {
+      const booking = await this.prisma.bookings.create({data: {user_id, room_id, start_date, end_date}})
+      this.prisma.notifications.create({data: {user_id, booking_id: booking.id, type: 'CREATED', title: `Booking created for room ${booking.room_id}`, message: `Booking created for room ${booking.room_id} from ${booking.start_date} to ${booking.end_date}!`}})
+    } else throw new NotAcceptableException('This booking overlaps with a pre-existing booking.')
   }
 
   async unbook(req: Request, dto: UnbookDto) {
@@ -46,6 +39,7 @@ export class BookingService {
     if (!booking)
     throw new NotFoundException('Booking Not Found')
 
+    this.prisma.notifications.create({data: {user_id, booking_id: booking.id, type: 'CANCELLED', title: `Booking cancelled for room ${booking.room_id}!`, message: `Booking for room ${booking.room_id} from ${booking.start_date} to ${booking.end_date} cancelled!`}})
     return this.prisma.bookings.delete({where: {id: booking.id}})
   }
 
@@ -77,6 +71,7 @@ export class BookingService {
   }
 
   edit_booking(dto: EditBookingDto) {
+    // The spec does not require notifications for this kind of action.
     return this.prisma.bookings.update({data: {status: dto.status}, where: {id: dto.id}})
   }
 }
