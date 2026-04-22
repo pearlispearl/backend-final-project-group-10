@@ -16,20 +16,11 @@ export class BookingService {
     const user_id = this.get_user_id(req)
     const {room_id, start_date, end_date} = dto
     // Just findFirst our start < start < our end | start < our end < end and create a booking if it doesn't exist.
-    if (!await this.prisma.bookings.findFirst(
-      {
+    if (!await this.prisma.bookings.findFirst({
         where: {
-          OR: [
-            { AND: [
-                { start_date: { lte: dto.end_date } },
-                { end_date: { gte: dto.end_date } }
-              ]
-            },
-            { AND: [
-                { start_date: { gte: dto.start_date } },
-                { start_date: { lte: dto.end_date } }
-              ]
-            }
+          AND: [
+            { start_date: { lte: dto.end_date } },
+            { end_date: { gte: dto.start_date } }
           ]
         }
       }
