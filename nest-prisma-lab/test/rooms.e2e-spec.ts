@@ -12,7 +12,7 @@ import { Role } from '../src/roles/roles.decorator';
 
 // Mock Redis Store to avoid connectivity issues during tests.
 // This ensures we can run E2E tests without needing a separate Redis instance running.
-jest.mock('cache-manager-redis-yet', () => ({
+jest.mock('keyv', () => ({
   redisStore: () => ({
     get: jest.fn(),
     set: jest.fn(),
@@ -128,8 +128,8 @@ describe('RoomsController (e2e)', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200);
     
-    expect(Array.isArray(response.body.data)).toBe(true);
-    const found = response.body.data.find((r) => r.id === createdRoomId);
+    expect(Array.isArray(response.body)).toBe(true);
+    const found = response.body.find((r: any) => r.id === createdRoomId);
     expect(found).toBeDefined();
   });
 
