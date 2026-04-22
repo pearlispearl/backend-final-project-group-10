@@ -11,12 +11,6 @@ export class SearchController {
   constructor(private readonly search: SearchService) {}
 
   @ApiOperation({ summary: 'Retrieve all rooms' })
-  // @ApiQuery({ name: 'is_active', required: false, type: Boolean, description: 'Filter by active status', example: true })
-  // @ApiQuery({ name: 'min_price', required: false, type: Number, description: 'Minimum price per night', example: 1000 })
-  // @ApiQuery({ name: 'max_price', required: false, type: Number, description: 'Maximum price per night', example: 5000 })
-  // @ApiQuery({ name: 'min_capacity', required: false, type: Number, description: 'Minimum room capacity', example: 2 })
-  // @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Number of results per page', example: 10 })
-  // @ApiQuery({ name: 'offset', required: false, type: Number, description: 'Number of results to skip', example: 0 })
   @ApiBody({ type: SearchQueryDto })
   @ApiOperation({summary: "Retrieve all rooms that pass the search query"})
   @ApiResponse({
