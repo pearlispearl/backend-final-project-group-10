@@ -22,9 +22,9 @@ export class SearchService {
     return rooms.filter(
       room => {
         if (room.name && dto.name &&
-          !room.name.includes(dto.name)) return false
+          !room.name.toLowerCase().includes(dto.name.toLowerCase())) return false
         if (room.description && dto.description &&
-          !room.description.includes(dto.description)) return false
+          !room.description.toLowerCase().includes(dto.description.toLowerCase())) return false
 
         return room.is_active
       }
