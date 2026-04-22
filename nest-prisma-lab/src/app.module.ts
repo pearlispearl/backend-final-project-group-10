@@ -33,7 +33,8 @@ import { BookingModule } from './booking/booking.module';
         { ttl: 60 * 1000, limit: 30 }
       ]
     }),
-    SearchModule
+    SearchModule,
+    BookingModule
   ],
   controllers: [AppController],
   providers: [

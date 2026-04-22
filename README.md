@@ -8,7 +8,7 @@ When committing, please describe what you are doing and prefix the commit messag
 If possible, keep commit tasks isolated. For example, when you modify the .env file and when you modify the Prisma Schema, seperate the commits.
 
 # Deployment
-We have deployed our server at [the server provided by Aj. Wudhichart](http://10.34.112.171:3000/). You can check it out there.
+We have deployed our server at [the server provided by Aj. Wudhichart](http://10.34.112.171/api/). You can check it out there.
 
 ## Docker (Preferred)
 
