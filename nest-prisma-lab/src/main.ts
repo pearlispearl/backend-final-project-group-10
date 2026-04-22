@@ -21,6 +21,7 @@ async function bootstrap() {
     .setVersion('1.0.0')
     .addTag('rooms')
     .addTag('bookings')
+    .addTag('search')
     .addTag('auth')
     .addTag('notifications')
     .addBearerAuth({name: 'Jwt', type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header'}, 'access-token')
