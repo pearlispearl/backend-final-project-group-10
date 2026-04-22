@@ -68,7 +68,7 @@ export class BookingService {
   
     // Duplicated ID extraction
     try {
-      const payload = this.jwt.verify(token, {secret: "ICT88@MU"})
+      const payload = this.jwt.verify(token, {secret: process.env["JWT_SECRET"]})
       return payload.sub
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
