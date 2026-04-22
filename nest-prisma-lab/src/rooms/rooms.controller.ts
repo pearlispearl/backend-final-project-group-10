@@ -139,7 +139,7 @@ export class RoomsController {
   @Roles(Role.Admin)
   @Patch(':id/disable')
   @Throttle({ default: { limit: 1, ttl: 60 * 1000 } })
-  disabled(@Param('id', ParseIntPipe) id: number) {
+  disable(@Param('id', ParseIntPipe) id: number) {
     return this.roomsService.disable(+id);
   }
 
