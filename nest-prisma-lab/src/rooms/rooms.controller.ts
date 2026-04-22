@@ -12,7 +12,6 @@ import { Room } from './entities/room.entity';
 
 @Controller('rooms')
 @UseInterceptors(CacheInterceptor)
-@UseGuards(JwtAuthGuard, RolesGuard)
 @Throttle({ default: { ttl: 60000, limit: 10 } })
 @ApiTags('rooms')
 export class RoomsController {
@@ -39,7 +38,6 @@ export class RoomsController {
   }
 
   @Get()
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Get all rooms' })
   @ApiResponse({ status: 200, description: 'Return all rooms' })
   findAll() {
@@ -147,6 +145,3 @@ export class RoomsController {
     return await this.roomsService.update(id, updateRoomDto);
   }
 }
-
-
-
